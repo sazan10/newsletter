@@ -29,7 +29,8 @@ class App extends Component {
     showProps:false,
     buttonText:"Button",
     showCK:false,
-    data:"Hello"
+    data:"Hello",
+    leftComponent:[]
   }
 componentDidMount(){
   this.type="";
@@ -55,26 +56,29 @@ this.type="text";
   // }
   // this.setState(newState1);
   this.setState({
-    left: data
+    leftComponent:[...this.state.leftComponent, data]
   });
   console.log("state",this.state)
 }
   buttonChange=(e)=>{
     let buttText=e.target.value;
     this.setState({buttonText:buttText})
-    if(this.state.left && this.type==="button")
+    if(this.state.leftComponent && this.type==="button")
       {
        this.componentIndex++;
         let butt=(<SubgridLeft id= "leftButton"  classe= "button" disabled={true} onClick={this.buttonClick} index={this.componentIndex}>{e.target.value}</SubgridLeft>);
+        // this.setState({
+        //   left:butt
+        // });
         this.setState({
-          left:butt
+          leftComponent:[...this.state.leftComponent,butt]
         });
 
         console.log("state",this.state)
 
 
       }
-      else if (this.state.left && this.type==="text")
+      else if (this.state.leftComponent && this.type==="text")
       {
         let data = (<CKEditor
           editor={ ClassicEditor }
@@ -90,8 +94,11 @@ this.type="text";
           } }
       />);
       let data1=<Container onClick={this.ckeditorOpen}>{this.state.data}</Container>;
+          // let newState1={
+          //   left:data1
+          // }
           let newState1={
-            left:data1
+            leftComponent:[...this.state.leftComponent,data1]
           }
           this.setState(newState1);
       }
@@ -99,7 +106,9 @@ this.type="text";
   }
   delete=()=>
   {
-    this.setState({buttonText:"Button",left:null,showProps:false});
+    // this.setState({buttonText:"Button",left:null,showProps:false});
+    this.setState({buttonText:"Button",leftComponent:[],showProps:false});
+
     this.type="";
   }
   formSubmit=(e)=>{
@@ -130,8 +139,11 @@ this.type="text";
           this.type="button";
           this.componentIndex++;
         let butt=(<SubgridLeft id= "leftButton" index={this.componentIndex} classe= "button" disabled={true} onClick={this.buttonClick}>{this.state.buttonText}</SubgridLeft>);
+        // this.setState({
+        //   left: butt
+        // });
         this.setState({
-          left: butt
+          leftComponent: [...this.state.leftComponent,butt]
         });
           console.log("dsfdsfds",this.state);
           break;
@@ -140,8 +152,11 @@ this.type="text";
 
       let data1=<Container onClick={this.ckeditorOpen}>{this.state.data}</Container>;
       
+      // this.setState({
+      //   left:data1
+      // });
       this.setState({
-        left:data1
+        leftComponent:[...this.state.leftComponent,data1]
       });
           break;
           default:
@@ -167,7 +182,8 @@ this.type="text";
            <Grid item className="left" item xs={12} sm={8}  ref={provided.innerRef} {...provided.droppableProps}>
            {/* <Subgrid index={index[2]} id="3">s </Subgrid> */}
            {/* {provided.placeholder} */}
-           {this.state.left}
+           {/* {this.state.left} */}
+           {this.state.leftComponent}
 
            </Grid>
       )}
